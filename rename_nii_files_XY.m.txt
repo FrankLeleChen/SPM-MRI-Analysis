@@ -1,0 +1,27 @@
+function rename_nii_files(subjID)
+% rename the nii files after imported using 'import dicom files' function of SPM,
+% make the file names shorter and more meaningful
+% files from different run will be organized into different folder
+
+% Xiao-Fei Yang, Jan., 10, 2009, ###xiaofei321##at##gmail##dot###com
+% modified May, 29, 2009
+
+% go the the right path
+subDir = ['study\',subjID];
+% list names of the different functional runs (also the names of the subfolders)
+% e.g.
+runs={'run1','run2','run3','run4','ASL','EPI'};
+
+
+for r=1:length(runs)
+     cd([subDir,'/',runs{r}]);
+     % imported functional files will have a prefix 'f'
+     oldfilename = dir('f*.nii');
+     for n = 1:length(oldfilename)
+         % need to count file name characters to determine the right
+         % range
+         % new file names will the the form of 'subxxx-runx-0001.nii'
+         newfilename = strcat('sub',subj,'-',runs{r},'-',oldfilename(n).name(49:52),'.nii');
+         movefile(oldfilename(n).name,newfilename);
+     end
+end
